@@ -1,0 +1,41 @@
+include <iostream>
+#include <fstream>
+using namespace std;
+
+bool constant_check (string Alpha){
+    for (int i=0; i< Alpha.size(); i++)
+    {
+        if(!isdigit(Alpha[i] ))
+        {
+            return false;
+        }
+    }
+    return true;}
+
+int main() {
+
+
+string myText;
+ifstream MyReadFile("TEST.txt");
+
+while(getline (MyReadFile, myText)) {
+
+cout<<"String type: ";
+
+
+if( constant_check(myText))
+    {
+    cout<<"whole Number \n";
+    }
+
+
+else{
+    cout<<"This string is not numeric \n";
+    }
+
+
+// cout << myText<<endl;
+}
+
+MyReadFile.close();
+}
