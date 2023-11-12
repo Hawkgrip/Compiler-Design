@@ -25,7 +25,7 @@ cout<<"String type: ";
 
 if( constant_check(myText))
     {
-    cout<<"whole Number \n";
+    cout<<"whole Number and integer\n";
     }
 
 
