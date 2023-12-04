@@ -1,42 +1,52 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <set>
 
 using namespace std;
 
 int main() {
-    ifstream inputFile("test.cpp");
+    ifstream inputFile("program.cpp");
 
     if (!inputFile.is_open()) {
         cout << "STOP!!!!Error opening the file!" << endl;
         return 1;
     }
 
-    set<string> uniqueFunctionNames;
+    const int maxUniqueFunctions = 10;
+    string uniqueFunctionNames[maxUniqueFunctions];
+    int uniqueFunctionsCount = 0;
 
     string line;
+
     while (getline(inputFile, line)) {
-        size_t pos = line.find('('); // Look for function declaration
+        size_t pos = line.find('(');
         if (pos != string::npos) {
             size_t spacePos = line.rfind(' ', pos);
             if (spacePos != string::npos) {
-                string functionName = line.substr(spacePos + 1, pos - spacePos - 1); //  function name
-                if (functionName != "main") { // Check if the function name is not "main"
-                    uniqueFunctionNames.insert(functionName); // Insert the function name into the set
+                string functionName = line.substr(spacePos + 1, pos - spacePos - 1);
+                if (functionName != "main") {
+                    // Check if the function name is already in the array
+                    bool isUnique = true;
+                    for (int i = 0; i < uniqueFunctionsCount; ++i) {
+                        if (uniqueFunctionNames[i] == functionName) {
+                            isUnique = false;
+                            break;
+                        }
+                    }
+                    if (isUnique && uniqueFunctionsCount < maxUniqueFunctions) {
+                        uniqueFunctionNames[uniqueFunctionsCount++] = functionName;
+                    }
                 }
             }
         }
     }
 
     cout << "Unique User-Defined Function Names:" << endl;
-    for (const auto& functionName : uniqueFunctionNames) {
-        cout << functionName << endl;
+    for (int i = 0; i < uniqueFunctionsCount; ++i) {
+        cout << uniqueFunctionNames[i] << endl;
     }
 
-    int totalFunctions = uniqueFunctionNames.size(); // Get the total number of unique function names
-
-    cout << "Total number of  user-defined functions : " << totalFunctions << endl;
+    cout << "Total number of user-defined functions: " << uniqueFunctionsCount << endl;
 
     inputFile.close();
     return 0;
